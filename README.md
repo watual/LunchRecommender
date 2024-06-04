@@ -2,8 +2,12 @@
 
 ### **깃허브 규칙**
 
+### 브랜치명 규칙
+
 - 브랜치명 = API 명세 기능명
-    - ex) 회원가입 branch
+    - feat/user_create
+    - feat/post_update
+    - feat/comment_delete
 
 ### 깃헙 이슈 규칙
 
