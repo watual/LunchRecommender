@@ -1,5 +1,6 @@
 package com.sparta.lunchrecommender.entity;
 
+import com.sparta.lunchrecommender.dto.post.PostCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,11 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private TmpUser tmpUser;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private TmpUser tmpUser;
+
+    public Post(PostCreateRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
 }
