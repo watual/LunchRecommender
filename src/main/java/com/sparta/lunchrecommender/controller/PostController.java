@@ -1,12 +1,12 @@
 package com.sparta.lunchrecommender.controller;
 
-import com.sparta.lunchrecommender.dto.PostResponseDto;
+import com.sparta.lunchrecommender.dto.post.PostCreateRequestDto;
+import com.sparta.lunchrecommender.dto.post.PostResponseDto;
+import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import com.sparta.lunchrecommender.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +30,17 @@ public class PostController {
             return ResponseEntity.ok(posts);
         }
     }
+
+    @PostMapping("/post")
+    public PostResponseDto createPost(@RequestBody PostCreateRequestDto requestDto){
+        return postService.createPost(requestDto);
+    }
+
+
+    @PutMapping("/post/{postId}")
+    public PostResponseDto updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto){
+        return postService.updatePost(postId, requestDto);
+    }
+
+
 }
