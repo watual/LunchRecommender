@@ -1,6 +1,7 @@
 package com.sparta.lunchrecommender.entity;
 
 import com.sparta.lunchrecommender.dto.post.PostCreateRequestDto;
+import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,10 @@ public class Post extends Timestamped {
 //    private TmpUser tmpUser;
 
     public Post(PostCreateRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
+
+    public void update(PostUpdateRequestDto requestDto) {
         this.content = requestDto.getContent();
     }
 }
