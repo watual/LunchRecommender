@@ -56,4 +56,13 @@ public class TmpUserSM extends Timestamped{
         this.email = email;
 
     }
+
+    public void update(ProfileRequestDto requestDto){
+        this.password = requestDto.getPassword();
+        this.username = requestDto.getUsername();
+        this.nickname = requestDto.getNickname();
+        this.intro = requestDto.getIntro();
+        this.email = requestDto.getEmail();
+
+    }
 }
