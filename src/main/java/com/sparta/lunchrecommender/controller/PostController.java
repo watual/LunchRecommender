@@ -5,6 +5,7 @@ import com.sparta.lunchrecommender.dto.post.PostResponseDto;
 import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import com.sparta.lunchrecommender.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,10 +37,15 @@ public class PostController {
         return postService.createPost(requestDto);
     }
 
-
-    @PutMapping("/post/{postId}")
+    @PatchMapping("/post/{postId}")
     public PostResponseDto updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto){
         return postService.updatePost(postId, requestDto);
+    }
+
+    @DeleteMapping("/post/{postId}")
+    public ResponseEntity<String> deletePost (@PathVariable Long postId){
+        postService.deletePost(postId);
+        return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
 
 

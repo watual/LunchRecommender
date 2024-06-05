@@ -47,4 +47,12 @@ public class PostService {
         return postRepository.findById(postId).orElseThrow(()->
                 new IllegalArgumentException("선택한 게시물이이 존재하지 않습니다."));
     }
+
+    public void deletePost(Long postId) {
+
+        Post post = findPostById(postId);
+
+        postRepository.delete(post);
+
+    }
 }
