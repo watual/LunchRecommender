@@ -11,12 +11,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "user")
-public class User {
+public class TmpUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "tmpUser")
     private List<Post> posts = new ArrayList<>();
 }
