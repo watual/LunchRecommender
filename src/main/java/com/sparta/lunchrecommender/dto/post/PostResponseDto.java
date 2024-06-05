@@ -1,9 +1,11 @@
-package com.sparta.lunchrecommender.dto;
+package com.sparta.lunchrecommender.dto.post;
 
 import com.sparta.lunchrecommender.entity.Post;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class PostResponseDto {
 
     private Long post_id;
