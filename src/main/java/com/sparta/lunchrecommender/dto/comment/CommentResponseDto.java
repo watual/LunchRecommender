@@ -14,9 +14,8 @@ public class CommentResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-//    private final Long post_id;
-//    private final Long user_id;
-//    private final String user_name;
+    private final Long post_id;
+    //private final Long user_id;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
@@ -24,6 +23,6 @@ public class CommentResponseDto {
         // this.like_count = comment.getLike_count();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
-        // id들 받아오기
+        this.post_id=comment.getPost().getPostId();
     }
 }

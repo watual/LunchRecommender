@@ -24,12 +24,18 @@ public class Comment extends Timestamped{
 //    @Column(nullable = false)
 //    private Long like_count;
 
-    // 게시물 id
+    @ManyToOne
+    @JoinColumn(name="post_id", nullable = false)
+    private Post post;
 
-    // 사용자 pk
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private TmpUser tmpUser;
 
-    public Comment(CommentRequestDto commentRequestDto) {
+    public Comment(CommentRequestDto commentRequestDto, Post post) {
         this.content = commentRequestDto.getContent();
+        this.post = post;
+       // this.tmpUser = tmpUser;
         // this.like_count = like_count;
     }
 }
