@@ -18,7 +18,7 @@ public class CommentResponseDto {
     //private final Long user_id;
 
     public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
+        this.id = comment.getCommentId();
         this.content = comment.getContent();
         // this.like_count = comment.getLike_count();
         this.createdAt = comment.getCreatedAt();

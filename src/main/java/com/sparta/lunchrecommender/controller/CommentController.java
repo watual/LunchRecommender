@@ -3,7 +3,12 @@ package com.sparta.lunchrecommender.controller;
 import com.sparta.lunchrecommender.dto.comment.CommentRequestDto;
 import com.sparta.lunchrecommender.dto.comment.CommentResponseDto;
 import com.sparta.lunchrecommender.service.CommentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/post")
@@ -15,8 +20,38 @@ public class CommentController {
     }
 
     @PostMapping("/{post_id}/comment")
-    public CommentResponseDto addComment(@PathVariable Long post_id,
-                                         @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.addComment(post_id, commentRequestDto);
+    public ResponseEntity<?> addComment(@PathVariable Long post_id,
+                                                        @RequestBody CommentRequestDto commentRequestDto) {
+        try {
+            CommentResponseDto commentResponseDto = commentService.addComment(post_id, commentRequestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(commentResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{post_id}/comment/{comment_id}")
+    public ResponseEntity<?> findCommentById(@PathVariable("post_id") Long post_id,
+                                              @PathVariable("comment_id") Long comment_id) {
+        try {
+            CommentResponseDto commentResponseDto = commentService.findCommentById(post_id, comment_id);
+            return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{post_id}/comment")
+    public ResponseEntity<?> findCommentAll(@PathVariable Long post_id) {
+        try {
+            List<CommentResponseDto> comments = commentService.findCommentAll(post_id);
+            if (comments.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body("가장 먼저 댓글을 남겨보세요!");
+            } else{
+                return ResponseEntity.status(HttpStatus.OK).body(comments);
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

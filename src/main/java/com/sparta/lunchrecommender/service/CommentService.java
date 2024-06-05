@@ -11,12 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-
 
 
     public CommentResponseDto addComment(Long postId, CommentRequestDto commentRequestDto) {
@@ -25,5 +26,18 @@ public class CommentService {
         Comment comment = commentRepository.save(new Comment(commentRequestDto, post));
 
         return new CommentResponseDto(comment);
+    }
+
+    public CommentResponseDto findCommentById(Long postId, Long commentId) {
+        postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("선택한 댓글이 존재하지 않습니다."));
+
+        return new CommentResponseDto(comment);
+    }
+
+    public List<CommentResponseDto> findCommentAll(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."));
+
+        return commentRepository.findAllByPostId(post.getPostId()).stream().map(CommentResponseDto::new).toList();
     }
 }

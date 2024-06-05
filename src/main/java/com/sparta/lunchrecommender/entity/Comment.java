@@ -14,7 +14,7 @@ public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long id;
+    private Long commentId;
 
     @NotBlank(message = "내용을 입력해주세요.")
     @Column(nullable = false)
