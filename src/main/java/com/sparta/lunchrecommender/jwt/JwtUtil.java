@@ -1,5 +1,6 @@
 package com.sparta.lunchrecommender.jwt;
 
+import com.sparta.lunchrecommender.constant.TokenType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -38,13 +39,14 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String loginId) {
+    public String createToken(String loginId, TokenType tokenType) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(loginId) // 사용자 식별자값(로그인 ID)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
+                        .claim("TokenType", tokenType)
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘
                         .compact();
