@@ -28,14 +28,14 @@ public class Comment extends Timestamped{
     @JoinColumn(name="post_id", nullable = false)
     private Post post;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private TmpUser tmpUser;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Comment(CommentRequestDto commentRequestDto, Post post) {
+    public Comment(CommentRequestDto commentRequestDto, Post post, User user) {
         this.content = commentRequestDto.getContent();
         this.post = post;
-       // this.tmpUser = tmpUser;
+        this.user = user;
         // this.like_count = like_count;
     }
 }

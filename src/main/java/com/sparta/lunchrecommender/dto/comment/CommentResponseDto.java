@@ -15,7 +15,7 @@ public class CommentResponseDto {
     private final LocalDateTime modifiedAt;
 
     private final Long post_id;
-    //private final Long user_id;
+    private final Long user_id;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getCommentId();
@@ -23,6 +23,7 @@ public class CommentResponseDto {
         // this.like_count = comment.getLike_count();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
-        this.post_id=comment.getPost().getPostId();
+        this.post_id = comment.getPost().getPostId();
+        this.user_id = comment.getUser().getUserId();
     }
 }
