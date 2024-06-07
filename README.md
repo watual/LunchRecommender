@@ -33,6 +33,7 @@
 | 🔨script | package.json 변경(npm 설치 등) |
 
 커밋 제목
+
     - update : 회원가입 데이터 유효성 검사
     - bugfix : 로그인 Validation failed error 해결
     
