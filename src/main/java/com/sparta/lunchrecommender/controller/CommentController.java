@@ -25,18 +25,16 @@ public class CommentController {
     }
 
     @PostMapping("/{post_id}/comment")
-    public ResponseEntity<?> addComment(@PathVariable Long post_id,
+    public CommentResponseDto addComment(@PathVariable Long post_id,
                                         @RequestBody CommentRequestDto commentRequestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CommentResponseDto commentResponseDto = commentService.addComment(post_id, commentRequestDto, userDetails.getUser());
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentResponseDto);
+        return commentService.addComment(post_id, commentRequestDto, userDetails.getUser());
     }
 
     @GetMapping("/{post_id}/comment/{comment_id}")
-    public ResponseEntity<?> findCommentById(@PathVariable("post_id") Long post_id,
+    public CommentResponseDto findCommentById(@PathVariable("post_id") Long post_id,
                                              @PathVariable("comment_id") Long comment_id) {
-        CommentResponseDto commentResponseDto = commentService.findCommentById(post_id, comment_id);
-        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
+        return commentService.findCommentById(post_id, comment_id);
     }
 
     @GetMapping("/{post_id}/comment")
@@ -47,5 +45,13 @@ public class CommentController {
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(comments);
         }
+    }
+
+    @PatchMapping("/{post_id}/comment/{comment_id}")
+    public CommentResponseDto updateComment(@PathVariable("post_id") Long post_id,
+                                            @PathVariable("comment_id") Long comment_id,
+                                            @RequestBody CommentRequestDto commentRequestDto,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.updateComment(post_id, comment_id, commentRequestDto, userDetails.getUser());
     }
 }

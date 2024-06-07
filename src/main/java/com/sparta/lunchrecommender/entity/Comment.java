@@ -38,4 +38,8 @@ public class Comment extends Timestamped{
         this.user = user;
         // this.like_count = like_count;
     }
+
+    public void update(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
 }

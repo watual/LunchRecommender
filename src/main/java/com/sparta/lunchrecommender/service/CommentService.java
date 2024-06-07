@@ -42,4 +42,15 @@ public class CommentService {
 
         return commentRepository.findAllByPostId(post.getPostId()).stream().map(CommentResponseDto::new).toList();
     }
+
+    @Transactional
+    public CommentResponseDto updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto, User user) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("선택한 댓글이 존재하지 않습니다."));
+
+        if(!user.getUserId().equals(comment.getUser().getUserId())){
+            throw new IllegalArgumentException("댓글 작성자만 수정할 수 있습니다.");
+        }
+        comment.update(commentRequestDto);
+        return new CommentResponseDto(comment);
+    }
 }
