@@ -5,9 +5,11 @@ import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "Post")
 @NoArgsConstructor
 public class Post extends Timestamped {
@@ -17,18 +19,13 @@ public class Post extends Timestamped {
     @Column(name = "post_id")
     private Long postId;
 
-    @Column
-    private String loginId;
-
-    @Column
-    private String nickname;
 
     @Column(nullable = false)
     private String content;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private TmpUser tmpUser;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Post(PostCreateRequestDto requestDto) {
         this.content = requestDto.getContent();
@@ -37,4 +34,5 @@ public class Post extends Timestamped {
     public void update(PostUpdateRequestDto requestDto) {
         this.content = requestDto.getContent();
     }
+
 }
