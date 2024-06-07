@@ -50,10 +50,9 @@ public class PostController {
     }
 
     @DeleteMapping("/post/{post_Id}")
-    public ResponseEntity<String> deletePost(@PathVariable Long post_Id) {
-        postService.deletePost(post_Id);
-        return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다!", HttpStatus.OK);
+    public ResponseEntity<?> deletePost(@PathVariable Long post_Id,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        postService.deletePost(post_Id, userDetails.getUser());
+        return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
-
-
 }
