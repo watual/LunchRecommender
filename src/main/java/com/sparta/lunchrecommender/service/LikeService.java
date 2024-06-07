@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LikeService {
 
-    LikeRepository likeRepository;
-    PostRepository postRepository;
-    CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     public ResponseEntity<HttpResponseDto> likeCreate(LikeRequestDto likeRequestDto, UserDetailsImpl userDetails) {
 
