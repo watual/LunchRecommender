@@ -21,7 +21,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/posts")
+    @GetMapping("/posts/getList")
     public ResponseEntity<?> getPosts() {
 
         List<PostResponseDto> posts = postService.getPosts();
