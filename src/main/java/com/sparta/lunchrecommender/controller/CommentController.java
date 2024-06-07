@@ -26,14 +26,14 @@ public class CommentController {
 
     @PostMapping("/{post_id}/comment")
     public CommentResponseDto addComment(@PathVariable Long post_id,
-                                        @RequestBody CommentRequestDto commentRequestDto,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                         @RequestBody CommentRequestDto commentRequestDto,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.addComment(post_id, commentRequestDto, userDetails.getUser());
     }
 
     @GetMapping("/{post_id}/comment/{comment_id}")
     public CommentResponseDto findCommentById(@PathVariable("post_id") Long post_id,
-                                             @PathVariable("comment_id") Long comment_id) {
+                                              @PathVariable("comment_id") Long comment_id) {
         return commentService.findCommentById(post_id, comment_id);
     }
 
@@ -53,5 +53,13 @@ public class CommentController {
                                             @RequestBody CommentRequestDto commentRequestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.updateComment(post_id, comment_id, commentRequestDto, userDetails.getUser());
+    }
+
+    @DeleteMapping("/{post_id}/comment/{comment_id}")
+    public ResponseEntity<String> deleteComment(@PathVariable("post_id") Long post_id,
+                                                @PathVariable("comment_id") Long comment_id,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentService.deleteComment(post_id, comment_id, userDetails.getUser());
+        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제가 완료되었습니다.");
     }
 }
