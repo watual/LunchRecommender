@@ -2,6 +2,7 @@ package com.sparta.lunchrecommender.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.lunchrecommender.constant.TokenType;
 import com.sparta.lunchrecommender.dto.HttpResponseDto;
 import com.sparta.lunchrecommender.dto.user.LoginRequestDto;
 import com.sparta.lunchrecommender.jwt.JwtUtil;
@@ -28,6 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        log.info("start JwtAuthenticationFilter");
         try {
             // HttpServletRequest 를 LoginRequestDto 객체로 변환
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
@@ -56,8 +58,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jsonResponse = objectMapper.writeValueAsString(new HttpResponseDto(HttpStatus.OK, "인증 성공"));
         response.getWriter().write(jsonResponse);
 
-        String token = jwtUtil.createToken(loginId);
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        response.addHeader(
+                JwtUtil.AUTHORIZATION_HEADER,
+                jwtUtil.createToken(loginId, TokenType.ACCESS));
+        response.addHeader(
+                JwtUtil.AUTHORIZATION_HEADER,
+                jwtUtil.createToken(loginId, TokenType.REFRESH));
     }
 
     @Override

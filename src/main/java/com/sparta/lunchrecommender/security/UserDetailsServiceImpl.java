@@ -1,6 +1,7 @@
 package com.sparta.lunchrecommender.security;
 
 
+import com.sparta.lunchrecommender.constant.UserStatus;
 import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 사용자 객체 검색
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found " + loginId));
+        //
+        if(user.getStatus().equals(UserStatus.DELETED.getStatus())){
+            throw new UsernameNotFoundException("User Deleted" + loginId);
+        }
 
         return new UserDetailsImpl(user);
     }
