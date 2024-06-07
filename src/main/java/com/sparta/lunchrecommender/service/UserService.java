@@ -5,6 +5,7 @@ import com.sparta.lunchrecommender.dto.user.PasswordRequestDto;
 import com.sparta.lunchrecommender.dto.user.UserRequestDto;
 import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.UserRepository;
+import com.sparta.lunchrecommender.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final UserUtil userUtil;
     private final UserRepository userRepository;
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -64,5 +66,11 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. 회원탈퇴를 취소합니다.");
         }
         user.setStatus(UserStatus.DELETED);
+    }
+
+    @Transactional
+    public void logout(Long userId) {
+        User user = userUtil.userVerifyById(userId);
+        user.setRefresh_token(null);
     }
 }

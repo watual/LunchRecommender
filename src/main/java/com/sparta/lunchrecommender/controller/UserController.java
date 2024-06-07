@@ -31,6 +31,13 @@ public class UserController {
         return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "회원가입 성공"), HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<HttpResponseDto> logout(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        log.info("로그아웃 요청");
+        userService.logout(userDetailsImpl.getUser().getUserId());
+        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "로그아웃 완료"), HttpStatus.OK);
+    }
+
     @PatchMapping("/deleteAccount")
     public ResponseEntity<HttpResponseDto> deleteAccount(
             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
