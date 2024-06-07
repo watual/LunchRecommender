@@ -1,5 +1,6 @@
 package com.sparta.lunchrecommender.security;
 
+import com.sparta.lunchrecommender.constant.Token;
 import com.sparta.lunchrecommender.jwt.JwtUtil;
 import com.sparta.lunchrecommender.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -7,9 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -35,9 +33,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        String tokenValue = jwtUtil.getJwtFromHeader(req);
-        log.info("Token : " + tokenValue);
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        log.info("In JwtAuthorizationFilter");
+        String tokenValue = jwtUtil.getJwtFromHeader(httpServletRequest, Token.TOKEN_TYPE_ACCESS);
 
         if (StringUtils.hasText(tokenValue)) {
             if (!jwtUtil.validateToken(tokenValue)) {
@@ -45,7 +43,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
             try {
                 setAuthentication(info.getSubject());
             } catch (Exception e) {
@@ -54,8 +51,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         }
 
-        log.info("Done JwtAuthorizationFilter");
-        filterChain.doFilter(req, res);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        log.info("End JwtAuthorizationFilter");
     }
 
     // 인증 처리

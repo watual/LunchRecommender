@@ -1,24 +1,20 @@
 package com.sparta.lunchrecommender.entity;
 
 import com.sparta.lunchrecommender.constant.UserStatus;
+import com.sparta.lunchrecommender.dto.profile.ProfileRequestDto;
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User extends UserTimestamped {
+public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -38,6 +34,9 @@ public class User extends UserTimestamped {
     private String refresh_token;
     @Column
     private String status;
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime statusModifiedAt;
 
 //    @OneToMany(mappedBy = "User")
 //    private List<Post> posts = new ArrayList<>();
@@ -45,7 +44,7 @@ public class User extends UserTimestamped {
     public void setStatus(UserStatus status) {
         if(!status.getStatus().equals(this.status)) {
             this.status = status.getStatus();
-            this.setStatusModifiedAt(LocalDateTime.now());
+            this.statusModifiedAt = LocalDateTime.now();
         }
     }
     public User(String loginId, String password, String name, String nickname, String email, String intro, UserStatus status) {
@@ -57,6 +56,15 @@ public class User extends UserTimestamped {
         this.intro = intro;
         this.refresh_token = refresh_token;
         this.status = status.getStatus();
-        this.setStatusModifiedAt(LocalDateTime.now());
+        this.statusModifiedAt = LocalDateTime.now();
+    }
+
+    // 프로필 수정 추가
+    public void update(ProfileRequestDto requestDto){
+        this.password = requestDto.getPassword();
+        this.name = requestDto.getName();
+        this.nickname = requestDto.getNickname();
+        this.intro = requestDto.getIntro();
+        this.email = requestDto.getEmail();
     }
 }

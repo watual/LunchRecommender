@@ -43,7 +43,7 @@ public class PostService {
 
         Post post = findPostById(postId);
 
-        if(!post.getUser().getUserId().equals(user.getUserId())) {
+        if (!post.getUser().getUserId().equals(user.getUserId())) {
             throw new IllegalArgumentException("현재 게시물 작성자만 수정이 가능합니다.");
         }
 
@@ -52,16 +52,21 @@ public class PostService {
         new PostResponseDto(post, user);
     }
 
-    private Post findPostById(Long postId) {
-        return postRepository.findById(postId).orElseThrow(()->
-                new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."));
-    }
-
-    public void deletePost(Long postId) {
+    public void deletePost(Long postId, User user) {
 
         Post post = findPostById(postId);
 
+        if (!post.getUser().getUserId().equals(user.getUserId())) {
+
+            throw new IllegalArgumentException("현재 게시물 작성자만 삭제가 가능합니다.");
+        }
+
         postRepository.delete(post);
 
+    }
+
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() ->
+                new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."));
     }
 }
