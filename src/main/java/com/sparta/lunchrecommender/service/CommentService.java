@@ -8,6 +8,7 @@ import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.CommentRepository;
 import com.sparta.lunchrecommender.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,5 +53,15 @@ public class CommentService {
         }
         comment.update(commentRequestDto);
         return new CommentResponseDto(comment);
+    }
+
+    public void deleteComment(Long postId, Long commentId, User user) {
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("선택한 댓글이 존재하지 않습니다."));
+
+        if(!user.getUserId().equals(comment.getUser().getUserId())){
+            throw new IllegalArgumentException("댓글 작성자만 삭제할 수 있습니다.");
+        }
+        commentRepository.delete(comment);
     }
 }
