@@ -20,7 +20,7 @@ public class User extends UserTimestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column
+    @Column(nullable = false, unique = true)
     private String loginId;
     @Column
     private String password;
