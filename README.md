@@ -31,3 +31,20 @@
 | 💄 style | css |
 | 🙈 gitfix | gitignore 수정 |
 | 🔨script | package.json 변경(npm 설치 등) |
+
+커밋 제목
+
+    - ADD : 회원가입 기능 추가
+    - UPDATE : 회원가입 기능 데이터 유효성 검사 기능 추가
+    - BUGFIX : 로그인 Validation failed error 해결
+    
+커밋 내용
+
+    - [ update ]
+    - update controller/UserController
+    - add repository/UserRepository
+        - 회원가입 기능 구현
+        
+    - [ bugfix ]
+    - update service/UserService
+        - 로그인 오류 수정
