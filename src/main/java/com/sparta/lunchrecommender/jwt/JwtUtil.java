@@ -1,14 +1,18 @@
 package com.sparta.lunchrecommender.jwt;
 
 import com.sparta.lunchrecommender.constant.Token;
+import com.sparta.lunchrecommender.entity.User;
+import com.sparta.lunchrecommender.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -18,8 +22,10 @@ import java.util.Date;
 
 @Slf4j(topic = "JwtUtil")
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
+    private final UserRepository userRepository;
     // Token 식별자
     public static final String BEARER_PREFIX = "Bearer ";
 
@@ -88,13 +94,17 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+    @Transactional
     // 토큰 발급
     public void generateTokenAndResponse(HttpServletResponse httpServletResponse, String loginId) throws IOException {
+        String refreshToken = createToken(loginId, Token.TOKEN_TYPE_REFRESH);
         httpServletResponse.addHeader(
                 Token.AUTHORIZATION_HEADER.getValue(),
                 createToken(loginId, Token.TOKEN_TYPE_ACCESS));
         httpServletResponse.addHeader(
                 Token.AUTHORIZATION_HEADER_REFRESH.getValue(),
-                createToken(loginId, Token.TOKEN_TYPE_REFRESH));
+                refreshToken);
+        User user = userRepository.findByLoginId(loginId).orElseThrow();
+        user.setRefresh_token(refreshToken.substring(7));
     }
 }

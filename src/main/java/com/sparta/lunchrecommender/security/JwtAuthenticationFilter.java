@@ -49,8 +49,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         String loginId = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-
         jwtUtil.generateTokenAndResponse(response, loginId);
+        log.info("로그인 완료");
     }
 
     @Override

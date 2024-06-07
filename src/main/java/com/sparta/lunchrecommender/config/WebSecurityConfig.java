@@ -5,6 +5,7 @@ import com.sparta.lunchrecommender.security.JwtAuthenticationFilter;
 import com.sparta.lunchrecommender.security.JwtAuthorizationFilter;
 import com.sparta.lunchrecommender.security.UserDetailsServiceImpl;
 import com.sparta.lunchrecommender.jwt.JwtUtil;
+import com.sparta.lunchrecommender.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final UserUtil userUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserRepository userRepository;
@@ -49,7 +51,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, userRepository);
+        return new JwtAuthorizationFilter(jwtUtil, userUtil, userDetailsService, userRepository);
     }
 
     @Bean
