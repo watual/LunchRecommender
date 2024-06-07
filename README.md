@@ -35,11 +35,14 @@
 커밋 제목
     - update : 회원가입 데이터 유효성 검사
     - bugfix : 로그인 Validation failed error 해결
+    
 커밋 내용
+
     - [ update ]
     - update controller/UserController
     - add repository/UserRepository
         - 회원가입 기능 구현
+        
     - [ bugfix ]
     - update service/UserService
         - 로그인 오류 수정
