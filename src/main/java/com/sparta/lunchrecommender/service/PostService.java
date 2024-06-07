@@ -4,6 +4,7 @@ import com.sparta.lunchrecommender.dto.post.PostCreateRequestDto;
 import com.sparta.lunchrecommender.dto.post.PostResponseDto;
 import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import com.sparta.lunchrecommender.entity.Post;
+import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,15 @@ public class PostService {
 
     }
 
-    public PostResponseDto createPost(PostCreateRequestDto requestDto) {
+    public void createPost(PostCreateRequestDto requestDto, User user) {
 
         Post post = new Post(requestDto);
 
+        post.setUser(user);
+
         Post savedPost = postRepository.save(post);
 
-        return new PostResponseDto(savedPost);
+        new PostResponseDto(savedPost);
     }
 
     @Transactional
@@ -45,7 +48,7 @@ public class PostService {
 
     private Post findPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(()->
-                new IllegalArgumentException("선택한 게시물이이 존재하지 않습니다."));
+                new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."));
     }
 
     public void deletePost(Long postId) {

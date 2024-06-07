@@ -10,6 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -36,6 +38,9 @@ public class User extends UserTimestamped {
     private String refresh_token;
     @Column
     private String status;
+
+//    @OneToMany(mappedBy = "User")
+//    private List<Post> posts = new ArrayList<>();
 
     public void setStatus(UserStatus status) {
         if(!status.getStatus().equals(this.status)) {
