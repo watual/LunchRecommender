@@ -34,8 +34,9 @@
 
 커밋 제목
 
-    - update : 회원가입 데이터 유효성 검사
-    - bugfix : 로그인 Validation failed error 해결
+    - ADD : 회원가입 기능 추가
+    - UPDATE : 회원가입 기능 데이터 유효성 검사 기능 추가
+    - BUGFIX : 로그인 Validation failed error 해결
     
 커밋 내용
 
