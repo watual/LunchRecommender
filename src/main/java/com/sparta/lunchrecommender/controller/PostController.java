@@ -41,15 +41,18 @@ public class PostController {
         return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "게시물이 작성되었습니다!"), HttpStatus.OK);
     }
 
-    @PatchMapping("/post/{postId}")
-    public PostResponseDto updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequestDto requestDto) {
-        return postService.updatePost(postId, requestDto);
+    @PatchMapping("/post/{post_Id}")
+    public ResponseEntity<HttpResponseDto> updatePost(@PathVariable Long post_Id,
+                                                      @RequestBody PostUpdateRequestDto requestDto,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        postService.updatePost(post_Id, requestDto, userDetails.getUser());
+        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "게시물 수정되었습니다!"), HttpStatus.OK);
     }
 
     @DeleteMapping("/post/{post_Id}")
     public ResponseEntity<String> deletePost(@PathVariable Long post_Id) {
         postService.deletePost(post_Id);
-        return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다!", HttpStatus.OK);
     }
 
 
