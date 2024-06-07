@@ -1,6 +1,7 @@
 package com.sparta.lunchrecommender.entity;
 
 import com.sparta.lunchrecommender.constant.UserStatus;
+import com.sparta.lunchrecommender.dto.profile.ProfileRequestDto;
 import jakarta.persistence.*;
 import lombok.Generated;
 import lombok.Getter;
@@ -58,5 +59,14 @@ public class User extends UserTimestamped {
         this.refresh_token = refresh_token;
         this.status = status.getStatus();
         this.setStatusModifiedAt(LocalDateTime.now());
+    }
+
+    // 프로필 수정 추가
+    public void update(ProfileRequestDto requestDto){
+        this.password = requestDto.getPassword();
+        this.name = requestDto.getName();
+        this.nickname = requestDto.getNickname();
+        this.intro = requestDto.getIntro();
+        this.email = requestDto.getEmail();
     }
 }
