@@ -28,9 +28,9 @@ public class PostController {
 
         //가져온 Posts 비어있는지 체크
         if (posts.isEmpty()) {
-            return ResponseEntity.ok("먼저 작성하여 소식을 알려보세요!");
+            return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "먼저 작성하여 소식을 알려보세요!"), HttpStatus.OK);
         } else {
-            return ResponseEntity.ok(posts);
+            return new ResponseEntity<>(posts, HttpStatus.OK);
         }
     }
 
@@ -46,9 +46,9 @@ public class PostController {
         return postService.updatePost(postId, requestDto);
     }
 
-    @DeleteMapping("/post/{postId}")
-    public ResponseEntity<String> deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+    @DeleteMapping("/post/{post_Id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long post_Id) {
+        postService.deletePost(post_Id);
         return new ResponseEntity<>("일정이 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
 
