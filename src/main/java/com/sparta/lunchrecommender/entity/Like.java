@@ -5,9 +5,11 @@ import com.sparta.lunchrecommender.dto.like.LikeRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "liked")
 @NoArgsConstructor
 public class Like extends Timestamped{
@@ -24,6 +26,8 @@ public class Like extends Timestamped{
     @Column
     private Long contentId;
 
+
+
 //    public Like(Long userId, ContentsTypeEnum contentsType, Long contentId) {
 //        this.userId = userId;
 //        this.contentsType = contentsType;
@@ -31,8 +35,11 @@ public class Like extends Timestamped{
 //    }
 
     public Like(LikeRequestDto request){
-        this.userId = request.getUserId();
         this.contentsType = request.getContentsType();
         this.contentId = request.getContentId();
     }
+
+//    public void setUserId(Long userId){
+//        this.userId = userId;
+//    }
 }
