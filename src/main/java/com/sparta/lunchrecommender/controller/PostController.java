@@ -7,6 +7,7 @@ import com.sparta.lunchrecommender.dto.post.PostUpdateRequestDto;
 import com.sparta.lunchrecommender.security.UserDetailsImpl;
 import com.sparta.lunchrecommender.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,11 +23,14 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/posts/getList")
-    public ResponseEntity<?> getPosts() {
+    public ResponseEntity<?> getPosts(
+            @RequestParam(value = "page", defaultValue = "0") int page, // 사용자가 입력하지 않았다면 첫번째 페이지(0)를 반환함
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy // 사용자가 입력하지 않았다면 생성일자순으로 반환함
+    ) {
 
-        List<PostResponseDto> posts = postService.getPosts();
-
-        //가져온 Posts 비어있는지 체크
+        int size = 10;
+        boolean isAsc = false;
+        Page<PostResponseDto> posts = postService.getPosts(page, size, sortBy, isAsc);
         if (posts.isEmpty()) {
             return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "먼저 작성하여 소식을 알려보세요!"), HttpStatus.OK);
         } else {

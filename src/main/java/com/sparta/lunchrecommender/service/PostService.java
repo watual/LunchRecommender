@@ -8,6 +8,10 @@ import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +24,14 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public List<PostResponseDto> getPosts() {
+    public Page<PostResponseDto> getPosts(int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return postRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(post -> new PostResponseDto(post, post.getUser())).toList();
+        Page<Post> postList= postRepository.findAll(pageable);
 
+        return postList.map(post -> new PostResponseDto(post, post.getUser()));
     }
 
     public void createPost(PostCreateRequestDto requestDto, User user) {
