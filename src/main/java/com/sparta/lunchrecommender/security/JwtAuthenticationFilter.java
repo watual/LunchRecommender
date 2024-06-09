@@ -1,8 +1,7 @@
 package com.sparta.lunchrecommender.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.lunchrecommender.constant.TokenType;
+import com.sparta.lunchrecommender.constant.Token;
 import com.sparta.lunchrecommender.dto.HttpResponseDto;
 import com.sparta.lunchrecommender.dto.user.LoginRequestDto;
 import com.sparta.lunchrecommender.jwt.JwtUtil;
@@ -50,20 +49,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         String loginId = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(new HttpResponseDto(HttpStatus.OK, "인증 성공"));
-        response.getWriter().write(jsonResponse);
-
-        response.addHeader(
-                JwtUtil.AUTHORIZATION_HEADER,
-                jwtUtil.createToken(loginId, TokenType.ACCESS));
-        response.addHeader(
-                JwtUtil.AUTHORIZATION_HEADER,
-                jwtUtil.createToken(loginId, TokenType.REFRESH));
+        jwtUtil.generateTokenAndResponse(response, loginId);
+        log.info("로그인 완료");
     }
 
     @Override

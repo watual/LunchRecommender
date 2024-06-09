@@ -21,8 +21,8 @@ public class Comment extends Timestamped{
     private String content;
 
 
-//    @Column(nullable = false)
-//    private Long like_count;
+    @Column(nullable = false)
+    private Long like_count;
 
     @ManyToOne
     @JoinColumn(name="post_id", nullable = false)
@@ -31,6 +31,8 @@ public class Comment extends Timestamped{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+
 
     public Comment(CommentRequestDto commentRequestDto, Post post, User user) {
         this.content = commentRequestDto.getContent();
@@ -41,5 +43,9 @@ public class Comment extends Timestamped{
 
     public void update(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
+    }
+
+    public void setLikeCount(Long likecount) {
+        this.like_count = likecount;
     }
 }
