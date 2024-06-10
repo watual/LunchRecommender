@@ -8,9 +8,14 @@ import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -20,11 +25,20 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public List<PostResponseDto> getPosts() {
+    public Page<PostResponseDto> getPosts(int page, String sortBy, LocalDateTime startDate, LocalDateTime endDate) {
+        int size = 10; // 페이지수는 10개로 고정
+        Sort.Direction direction = Sort.Direction.DESC; // 항상 desc로 조회
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return postRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(post -> new PostResponseDto(post, post.getUser())).toList();
+        Page<Post> postList;
 
+        if(startDate != null && endDate != null){
+            postList = postRepository.findAllByCreatedAtBetween(startDate, endDate, pageable);
+        } else {
+            postList = postRepository.findAll(pageable);
+        }
+        return postList.map(post -> new PostResponseDto(post, post.getUser()));
     }
 
     public void createPost(PostCreateRequestDto requestDto, User user) {

@@ -38,7 +38,7 @@ public class LikeService {
                     (userDetails.getUser().getUserId(), ContentsTypeEnum.POST, likeRequestDto.getContentId()) != null) {
                 throw new NullPointerException("이미 좋아요를 누르셨습니다.");
             }
-            Long likecount = post.getLike_count() + 1;
+            Long likecount = post.getLikeCount() + 1;
             post.setLikeCount(likecount);
 
             Like like = new Like(likeRequestDto);
@@ -57,7 +57,7 @@ public class LikeService {
                 throw new NullPointerException("이미 좋아요를 누르셨습니다.");
             }
 
-            Long likecount = comment.getLike_count() + 1;
+            Long likecount = comment.getLikeCount() + 1;
             comment.setLikeCount(likecount);
 
             Like like = new Like(likeRequestDto);
@@ -84,7 +84,7 @@ public class LikeService {
                 throw new IllegalArgumentException("유저 정보가 올바르지 않습니다.");
             }
 
-            var likecount = post.getLike_count() - 1;
+            var likecount = post.getLikeCount() - 1;
             post.setLikeCount(likecount);
 
             likeRepository.delete(like);
@@ -101,7 +101,7 @@ public class LikeService {
                 throw new IllegalArgumentException("유저 정보가 올바르지 않습니다.");
             }
 
-            var likecount = comment.getLike_count() - 1;
+            var likecount = comment.getLikeCount() - 1;
             comment.setLikeCount(likecount);
 
             likeRepository.delete(like);
@@ -120,13 +120,13 @@ public class LikeService {
                     () -> new NullPointerException("존재하지 않는 게시글입니다.")
             );
 
-            return new LikeResponseDto(ContentsTypeEnum.POST,post.getPostId(),post.getLike_count());
+            return new LikeResponseDto(ContentsTypeEnum.POST,post.getPostId(),post.getLikeCount());
         }
         else{
             Comment comment = commentRepository.findById(likeRequestDto.getContentId()).orElseThrow(
                     () -> new NullPointerException("존재하지 않는 댓글입니다.")
             );
-            return new LikeResponseDto(ContentsTypeEnum.COMMENT,comment.getCommentId(),comment.getLike_count());
+            return new LikeResponseDto(ContentsTypeEnum.COMMENT,comment.getCommentId(),comment.getLikeCount());
         }
     }
 }
