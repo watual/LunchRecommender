@@ -8,6 +8,7 @@ import com.sparta.lunchrecommender.entity.Post;
 import com.sparta.lunchrecommender.repository.FollowRepository;
 import com.sparta.lunchrecommender.repository.PostRepository;
 import com.sparta.lunchrecommender.security.UserDetailsImpl;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,11 @@ public class FollowService {
     public List<Post> getFollowPost(UserDetailsImpl user) {
 
         List<Follow> followList = followRepository.findByUserId(user.getUser().getUserId());
+        if(followList.isEmpty()){
+            throw new NullPointerException("팔로우 한 계정이 없습니다.");
+        }
+
+
         List<Long> followeeIds =  followList.stream()
                 .map(Follow::getFolloweeId)
                 .collect(Collectors.toList());
