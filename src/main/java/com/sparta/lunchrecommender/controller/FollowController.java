@@ -27,9 +27,5 @@ public class FollowController {
         return followService.unfollow(userId,user);
     }
 
-    @GetMapping
-    public ResponseEntity<HttpResponseDto> getFollowPost(@AuthenticationPrincipal UserDetailsImpl user){
-        return followService.followPost(user);
-    }
 
 }
