@@ -27,7 +27,12 @@ public class AuthController {
     public ResponseEntity<HttpResponseDto> refresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.info("토큰 재발급 요청");
         authService.tokenRegeneration(httpServletRequest, httpServletResponse);
-        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "재발급 완료"), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                HttpResponseDto.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("재발급 완료")
+                        .build()
+        );
     }
 
     @GetMapping("/confirm")

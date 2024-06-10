@@ -6,6 +6,7 @@ import com.sparta.lunchrecommender.domain.like.dto.LikeResponseDto;
 import com.sparta.lunchrecommender.global.security.UserDetailsImpl;
 import com.sparta.lunchrecommender.domain.like.service.LikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,14 @@ public class LikeController {
 
 
     @GetMapping
-    public LikeResponseDto likeCount(@RequestBody LikeRequestDto likeRequestDto){
-        return likeService.likeCount(likeRequestDto);
+    public ResponseEntity<HttpResponseDto> likeCount(@RequestBody LikeRequestDto likeRequestDto){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                HttpResponseDto.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("팔로우한 게시물들이 조회되었습니다.")
+                        .data(likeService.likeCount(likeRequestDto))
+                        .build()
+        );
     }
 
 }
