@@ -25,7 +25,7 @@ public class Comment extends Timestamped {
     private String content;
 
 
-    @Column(nullable = false)
+    @Column
     private Long likeCount;
 
     @ManyToOne
@@ -42,6 +42,7 @@ public class Comment extends Timestamped {
         this.content = commentRequestDto.getContent();
         this.post = post;
         this.user = user;
+        this.likeCount = 0L;
     }
 
     public void update(CommentRequestDto commentRequestDto) {

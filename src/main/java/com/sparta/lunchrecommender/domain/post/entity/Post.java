@@ -25,7 +25,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private Long likeCount;
 
     @ManyToOne
@@ -36,6 +36,7 @@ public class Post extends Timestamped {
 
     public Post(PostCreateRequestDto requestDto) {
         this.content = requestDto.getContent();
+        this.likeCount = 0L;
     }
 
     public void update(PostUpdateRequestDto requestDto) {
