@@ -14,6 +14,13 @@ public class HttpResponseDto {
     private String message;
     private Object data;
 
+
+    public HttpResponseDto(HttpStatus status, int statusCode, String message, Object data){
+        this.status = status;
+        this.statusCode = statusCode;
+        this.message = message;
+        this.data = data;
+    }
     public HttpResponseDto(HttpStatus status, String message, Object data){
         this.status = status;
         this.statusCode = status.value();
