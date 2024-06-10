@@ -9,6 +9,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Comment extends Timestamped{
     @Id
@@ -22,7 +23,7 @@ public class Comment extends Timestamped{
 
 
     @Column(nullable = false)
-    private Long like_count;
+    private Long likeCount;
 
     @ManyToOne
     @JoinColumn(name="post_id", nullable = false)
@@ -38,14 +39,9 @@ public class Comment extends Timestamped{
         this.content = commentRequestDto.getContent();
         this.post = post;
         this.user = user;
-        // this.like_count = like_count;
     }
 
     public void update(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
-    }
-
-    public void setLikeCount(Long likecount) {
-        this.like_count = likecount;
     }
 }
