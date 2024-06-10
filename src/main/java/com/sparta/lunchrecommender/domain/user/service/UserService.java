@@ -102,22 +102,21 @@ public class UserService {
         EmailVerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         log.info(verificationToken.getUser().getUserId().toString() + " 사용자 메일 인증 시도");
         // 유효하지 않은 토큰
-        if (verificationToken == null) {
+        if (verificationToken.getId() == null) {
             log.info("유효하지 않은 키");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponseDto(HttpStatus.BAD_REQUEST, "유효하지 않은 키 입니다"));
-//                    new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, result), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponseDto(HttpStatus.BAD_REQUEST, "유효하지 않은 키 입니다", null));
         }
         // 이미 인증된 사용자
         User user = verificationToken.getUser();
         if (UserStatus.ACTIVE.getStatus().equals(user.getStatus())) {
             log.info("이미 인증된 계정");
-            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new HttpResponseDto(HttpStatus.ALREADY_REPORTED, "이미 인증된 계정입니다"));
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new HttpResponseDto(HttpStatus.ALREADY_REPORTED, "이미 인증된 계정입니다",null));
         }
         // 토큰 인증
         user.setStatus(UserStatus.ACTIVE);
         userRepository.save(user);
         // 인증 완료
         log.info("메일 정상 인증 완료");
-        return ResponseEntity.status(HttpStatus.OK).body(new HttpResponseDto(HttpStatus.OK, "인증이 완료되었습니다"));
+        return ResponseEntity.status(HttpStatus.OK).body(new HttpResponseDto(HttpStatus.OK, "인증이 완료되었습니다", null));
     }
 }
