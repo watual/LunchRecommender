@@ -2,6 +2,7 @@ package com.sparta.lunchrecommender.controller;
 
 import com.sparta.lunchrecommender.dto.HttpResponseDto;
 import com.sparta.lunchrecommender.dto.like.LikeRequestDto;
+import com.sparta.lunchrecommender.dto.like.LikeResponseDto;
 import com.sparta.lunchrecommender.security.UserDetailsImpl;
 import com.sparta.lunchrecommender.service.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class LikeController {
     public ResponseEntity<HttpResponseDto> likeCancel(@RequestBody LikeRequestDto likeRequestDto,
                                                       @AuthenticationPrincipal UserDetailsImpl user){
         return likeService.likeCancel(likeRequestDto,user);
+    }
+
+
+    @GetMapping
+    public LikeResponseDto likeCount(@RequestBody LikeRequestDto likeRequestDto){
+        return likeService.likeCount(likeRequestDto);
     }
 
 }
