@@ -19,28 +19,17 @@ public class Like extends Timestamped {
     @Column(name = "like_id")
     private Long likeId;
 
-    //@OneToOne(mappedBy = "user")
     @Column
     private Long userId;
     @Column
     private ContentsTypeEnum contentsType;
     @Column
     private Long contentId;
-
-
-
-//    public Like(Long userId, ContentsTypeEnum contentsType, Long contentId) {
-//        this.userId = userId;
-//        this.contentsType = contentsType;
-//        this.contentId = contentId;
-//    }
+    
 
     public Like(LikeRequestDto request){
         this.contentsType = request.getContentsType();
         this.contentId = request.getContentId();
     }
 
-//    public void setUserId(Long userId){
-//        this.userId = userId;
-//    }
 }
