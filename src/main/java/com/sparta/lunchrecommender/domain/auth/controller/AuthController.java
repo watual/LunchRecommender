@@ -1,4 +1,4 @@
-package com.sparta.lunchrecommender.domain.like.auth;
+package com.sparta.lunchrecommender.domain.auth.controller;
 
 import com.sparta.lunchrecommender.global.dto.HttpResponseDto;
 import com.sparta.lunchrecommender.domain.auth.repository.VerificationTokenRepository;
