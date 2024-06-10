@@ -16,15 +16,6 @@ spring:
         format_sql: true
         use_sql_comments: true
 
-server:
-  port: 443
-  ssl:
-    enabled: true
-    key-store: src/main/resources/bootsecurity.p12
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-store-type: PKCS12
-    key-alias: bootsecurity
-
   mail:
     host: smtp.gmail.com
     port: 587   # SMTP 서버 포트 (예: TLS의 경우 일반적으로 587, SSL의 경우 465)
@@ -34,3 +25,12 @@ server:
           auth: true      # SMTP 인증 사용 여부
           starttls:
             enable: true  # STARTTLS 사용 여부 (TLS 암호화)
+
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: src/main/resources/bootsecurity.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: bootsecurity

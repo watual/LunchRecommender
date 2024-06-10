@@ -25,14 +25,24 @@ public class UserController {
     public ResponseEntity<HttpResponseDto> signup(@Valid @RequestBody UserRequestDto requestDto) {
         log.info("회원가입 요청");
         userService.signup(requestDto);
-        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "회원가입 성공, 메일을 인증해주세요"), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                HttpResponseDto.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("회원가입 성공, 메일을 인증해주세요.")
+                        .build()
+        );
     }
 
     @PostMapping("/logout")
     public ResponseEntity<HttpResponseDto> logout(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
         log.info("로그아웃 요청");
         userService.logout(userDetailsImpl.getUser().getUserId());
-        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "로그아웃 완료"), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                HttpResponseDto.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("로그아웃이 완료 되었습니다.")
+                        .build()
+        );
     }
 
     @PatchMapping("/deleteAccount")
@@ -41,6 +51,11 @@ public class UserController {
             @RequestBody PasswordRequestDto passwordRequestDto
     ) {
         userService.deleteAccount(userDetailsImpl.getUser().getLoginId(), passwordRequestDto);
-        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "회원탈퇴가 완료되었습니다."), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                HttpResponseDto.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("회원 탈퇴가 완료되었습니다.")
+                        .build()
+        );
     }
 }
