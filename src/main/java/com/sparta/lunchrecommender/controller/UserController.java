@@ -1,9 +1,13 @@
 package com.sparta.lunchrecommender.controller;
 
+import com.sparta.lunchrecommender.constant.UserStatus;
 import com.sparta.lunchrecommender.dto.HttpResponseDto;
 import com.sparta.lunchrecommender.dto.user.PasswordRequestDto;
 import com.sparta.lunchrecommender.dto.user.UserRequestDto;
+import com.sparta.lunchrecommender.entity.EmailVerificationToken;
+import com.sparta.lunchrecommender.entity.User;
 import com.sparta.lunchrecommender.jwt.JwtUtil;
+import com.sparta.lunchrecommender.repository.VerificationTokenRepository;
 import com.sparta.lunchrecommender.security.UserDetailsImpl;
 import com.sparta.lunchrecommender.service.UserService;
 import jakarta.validation.Valid;
@@ -20,15 +24,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final JwtUtil jwtUtil;
     private final UserService userService;
-
 
     @PostMapping("/signup")
     public ResponseEntity<HttpResponseDto> signup(@Valid @RequestBody UserRequestDto requestDto) {
         log.info("회원가입 요청");
         userService.signup(requestDto);
-        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "회원가입 성공"), HttpStatus.OK);
+        return new ResponseEntity<>(new HttpResponseDto(HttpStatus.OK, "회원가입 성공, 메일을 인증해주세요"), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
