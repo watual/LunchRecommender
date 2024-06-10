@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -24,13 +25,19 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Page<PostResponseDto> getPosts(int page, int size, String sortBy, boolean isAsc) {
-        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    public Page<PostResponseDto> getPosts(int page, String sortBy, LocalDateTime startDate, LocalDateTime endDate) {
+        int size = 10; // 페이지수는 10개로 고정
+        Sort.Direction direction = Sort.Direction.DESC; // 항상 desc로 조회
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Post> postList= postRepository.findAll(pageable);
+        Page<Post> postList;
 
+        if(startDate != null && endDate != null){
+            postList = postRepository.findAllByCreatedAtBetween(startDate, endDate, pageable);
+        } else {
+            postList = postRepository.findAll(pageable);
+        }
         return postList.map(post -> new PostResponseDto(post, post.getUser()));
     }
 
