@@ -14,9 +14,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -71,13 +75,32 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/user/signup").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .requestMatchers(new AntPathRequestMatcher("/api/**/getList")).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/login/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-        );
+                );
 
         // 필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
+        // OAuth2 로그인 설정 추가
+        http.oauth2Login(oauth2Login ->
+                oauth2Login
+                        .loginPage("/")
+                        .defaultSuccessUrl("/user")
+                        .permitAll()
+        );
 
         return http.build();
+    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // /api/login/** 경로는 필터링에서 제외
+        return web -> web.ignoring()
+                .requestMatchers("/api/user/signup")
+                .requestMatchers(new AntPathRequestMatcher("/api/**/getList"))
+                .requestMatchers("/api/auth/**")
+                .requestMatchers("/api/login/**");
     }
 }
