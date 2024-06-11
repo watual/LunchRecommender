@@ -35,7 +35,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.info("In JwtAuthorizationFilter");
 
         String tokenValue = jwtUtil.getJwtFromHeader(httpServletRequest, Token.AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(tokenValue)) {
+        log.info(httpServletRequest.getRequestURL().toString());
+        if (
+                StringUtils.hasText(tokenValue)
+                        && !httpServletRequest.getRequestURL().toString().contains("/api/auth/")
+                        && !httpServletRequest.getRequestURL().toString().contains("/api/login/")
+                        && !httpServletRequest.getRequestURL().toString().contains("/api/user/signup")
+        ) {
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
                 return;

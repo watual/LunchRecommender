@@ -72,7 +72,6 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/api/user/signup").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .requestMatchers(new AntPathRequestMatcher("/api/**/getList")).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/login/**").permitAll()
@@ -80,9 +79,8 @@ public class WebSecurityConfig {
                 );
 
         // 필터 관리
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // OAuth2 로그인 설정 추가
         http.oauth2Login(oauth2Login ->
@@ -94,13 +92,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // /api/login/** 경로는 필터링에서 제외
-        return web -> web.ignoring()
-                .requestMatchers("/api/user/signup")
-                .requestMatchers(new AntPathRequestMatcher("/api/**/getList"))
-                .requestMatchers("/api/auth/**")
-                .requestMatchers("/api/login/**");
-    }
+
 }
