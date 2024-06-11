@@ -47,13 +47,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+        log.info("successfulAuthentication");
         String loginId = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+
+        // JWT 생성 및 헤더 설정
         jwtUtil.generateTokenAndResponse(response, loginId);
+
+        // 응답 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpStatus.OK.value());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(new HttpResponseDto(HttpStatus.OK, "인증 성공"));
+        response.getWriter().write(jsonResponse);
         log.info("로그인 완료");
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        log.info("unsuccessfulAuthentication");
         response.setStatus(401);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
