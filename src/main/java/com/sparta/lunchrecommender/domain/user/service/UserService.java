@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -105,6 +106,10 @@ public class UserService {
         if (verificationToken.getId() == null) {
             log.info("유효하지 않은 키");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponseDto(HttpStatus.BAD_REQUEST, "유효하지 않은 키 입니다", null));
+        }
+        // 인증 기간 만료
+        if(verificationToken.getExpiresAt().isBefore(LocalDateTime.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponseDto(HttpStatus.BAD_REQUEST, "시간이 만료되었습니다", null));
         }
         // 이미 인증된 사용자
         User user = verificationToken.getUser();
