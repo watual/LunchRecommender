@@ -53,7 +53,7 @@ public class UserService {
 
         EmailVerificationToken token = new EmailVerificationToken(user);
         verificationTokenRepository.save(token);
-        String url = "http://localhost:8080/api/auth/confirm?token=" + token.getToken();
+        String url = "https://localhost:443/api/auth/confirm?token=" + token.getToken();
         sendSimpleMessage(user.getEmail(), "LunchRecommender 회원가입 메일 인증", "메일 인증을 받으려면 링크를 클릭하세요: " + url);
         return url;
     }

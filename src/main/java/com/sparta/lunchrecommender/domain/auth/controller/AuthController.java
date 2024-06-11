@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -26,11 +29,12 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<HttpResponseDto> refresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.info("토큰 재발급 요청");
-        authService.tokenRegeneration(httpServletRequest, httpServletResponse);
+        Map<String, Object> tokenList = authService.tokenRegeneration(httpServletRequest, httpServletResponse);
         return ResponseEntity.status(HttpStatus.OK).body(
                 HttpResponseDto.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message("재발급 완료")
+                        .data(tokenList)
                         .build()
         );
     }

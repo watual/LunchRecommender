@@ -96,7 +96,7 @@ public class JwtUtil {
 
     @Transactional
     // 토큰 발급
-    public void generateTokenAndResponse(HttpServletResponse httpServletResponse, String loginId) throws IOException {
+    public String generateTokenAndResponse(HttpServletResponse httpServletResponse, String loginId) throws IOException {
         String refreshToken = createToken(loginId, Token.TOKEN_TYPE_REFRESH);
         httpServletResponse.addHeader(
                 Token.AUTHORIZATION_HEADER.getValue(),
@@ -106,5 +106,6 @@ public class JwtUtil {
                 refreshToken);
         User user = userRepository.findByLoginId(loginId).orElseThrow();
         user.setRefresh_token(refreshToken.substring(7));
+        return refreshToken;
     }
 }
