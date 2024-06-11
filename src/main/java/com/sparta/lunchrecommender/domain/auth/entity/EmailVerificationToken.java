@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,19 +20,12 @@ public class EmailVerificationToken {
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
-    private Date expiryDate;
+    private LocalDateTime expiresAt;
 
 
     public EmailVerificationToken(User user) {
         this.user = user;
         this.token = UUID.randomUUID().toString();
-        this.expiryDate = calculateExpiryDate();
-    }
-
-    // 토큰 만료일 계산 메소드
-    private Date calculateExpiryDate() {
-        // 토큰 만료 시간 설정 (24시간)
-        long expiryTime = System.currentTimeMillis() + 24 * 60 * 60 * 1000;
-        return new Date(expiryTime);
+        this.expiresAt = LocalDateTime.now().plusSeconds(180);
     }
 }
