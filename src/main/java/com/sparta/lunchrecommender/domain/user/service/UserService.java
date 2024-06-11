@@ -34,7 +34,7 @@ public class UserService {
     private final VerificationTokenRepository verificationTokenRepository;
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public void signup(UserRequestDto requestDto) {
+    public String signup(UserRequestDto requestDto) {
         String password = passwordEncoder.encode(requestDto.getPassword());
         if(userRepository.findByLoginId(requestDto.getLoginId()).isPresent()){
             throw new IllegalArgumentException("이미 등록된 회원입니다.");
@@ -55,6 +55,7 @@ public class UserService {
         verificationTokenRepository.save(token);
         String url = "http://localhost:8080/api/auth/confirm?token=" + token.getToken();
         sendSimpleMessage(user.getEmail(), "LunchRecommender 회원가입 메일 인증", "메일 인증을 받으려면 링크를 클릭하세요: " + url);
+        return url;
     }
 
     private void sendSimpleMessage(String to, String subject, String text) {

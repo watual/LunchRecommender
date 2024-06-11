@@ -24,11 +24,12 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<HttpResponseDto> signup(@Valid @RequestBody UserRequestDto requestDto) {
         log.info("회원가입 요청");
-        userService.signup(requestDto);
+        String url = userService.signup(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(
                 HttpResponseDto.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message("회원가입 성공, 메일을 인증해주세요.")
+                        .data(url)
                         .build()
         );
     }
