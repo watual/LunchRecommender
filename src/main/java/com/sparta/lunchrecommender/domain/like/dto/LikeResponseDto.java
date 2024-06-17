@@ -1,7 +1,9 @@
 package com.sparta.lunchrecommender.domain.like.dto;
 
 import com.sparta.lunchrecommender.domain.like.constant.ContentsTypeEnum;
+import lombok.Getter;
 
+@Getter
 public class LikeResponseDto {
     public ContentsTypeEnum contentsType;
     public Long contentId;

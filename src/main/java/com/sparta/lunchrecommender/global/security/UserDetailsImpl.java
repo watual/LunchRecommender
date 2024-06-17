@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final User user;
+    private final User user;    // token에 들어있던 LoginId로 userRepository 에서 찾음, 거기서 나온 user 객체를 가져옴
 
     public UserDetailsImpl(User user) {
         this.user = user;

@@ -1,6 +1,7 @@
 package com.sparta.lunchrecommender.domain.comment.dto;
 
 import com.sparta.lunchrecommender.domain.comment.entity.Comment;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

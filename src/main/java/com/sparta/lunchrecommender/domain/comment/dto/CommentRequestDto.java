@@ -2,9 +2,11 @@ package com.sparta.lunchrecommender.domain.comment.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class CommentRequestDto {
     @NotBlank
     private String content;

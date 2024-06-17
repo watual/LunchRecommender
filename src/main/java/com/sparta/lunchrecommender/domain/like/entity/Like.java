@@ -31,5 +31,4 @@ public class Like extends Timestamped {
         this.contentsType = request.getContentsType();
         this.contentId = request.getContentId();
     }
-
 }

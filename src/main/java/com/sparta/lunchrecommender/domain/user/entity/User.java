@@ -4,9 +4,8 @@ import com.sparta.lunchrecommender.global.util.Timestamped;
 import com.sparta.lunchrecommender.domain.user.constant.UserStatus;
 import com.sparta.lunchrecommender.domain.user.dto.ProfileRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -14,6 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 @Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class User extends Timestamped {
@@ -50,6 +51,7 @@ public class User extends Timestamped {
             this.statusModifiedAt = LocalDateTime.now();
         }
     }
+
     public User(String loginId, String password, String name, String nickname, String email, String intro, UserStatus status) {
         this.loginId = loginId;
         this.password = password;

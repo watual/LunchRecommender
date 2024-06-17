@@ -75,7 +75,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // 인증 객체 생성
     private Authentication createAuthentication(String loginId) {
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginId);
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginId);//UserDetailsImpl
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }

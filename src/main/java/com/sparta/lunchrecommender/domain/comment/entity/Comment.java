@@ -20,7 +20,7 @@ public class Comment extends Timestamped {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @NotBlank(message = "내용을 입력해주세요.")
+    @NotBlank(message = "내용을 입력해주세요")
     @Column(nullable = false)
     private String content;
 
